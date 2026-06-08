@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VECTIVA · CEO Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --emerald: #004D40;
+    --emerald-deep: #00332C;
+    --gold: #C9A84C;
+    --gold-soft: #E8C97A;
+    --cream: #FFFCF8;
+    --cream-dim: rgba(255,252,248,0.72);
+    --line: rgba(201,168,76,0.22);
+    --green: #4ADE80;
+    --amber: #FACC15;
+    --gray: #94A3B8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--emerald); color: var(--cream); font-family: 'Archivo', -apple-system, sans-serif; min-height: 100vh; }
+  body { padding: 20px; max-width: 1200px; margin: 0 auto; }
+  h1, h2, .display { font-family: 'Fraunces', Georgia, serif; font-weight: 600; }
+
+  .topbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  .topbar h1 { font-size: 28px; color: var(--gold); flex: 1; min-width: 200px; letter-spacing: -0.02em; }
+  .pill { padding: 6px 14px; border-radius: 999px; background: rgba(201,168,76,0.12); border: 1px solid var(--line); font-size: 12px; font-weight: 500; color: var(--cream-dim); }
+  .pill.on { background: rgba(74,222,128,0.18); border-color: rgba(74,222,128,0.4); color: var(--green); }
+  .pill.warn { background: rgba(250,204,21,0.18); border-color: rgba(250,204,21,0.4); color: var(--amber); }
+  .updated { font-size: 11px; color: var(--cream-dim); }
+
+  .grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) {
+    .grid { grid-template-columns: 2fr 1fr; }
+    .full { grid-column: 1 / -1; }
+  }
+  .card { background: var(--emerald-deep); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+  .card h2 { font-size: 18px; color: var(--gold); margin-bottom: 16px; letter-spacing: -0.01em; }
+
+  /* 승인 카드 (제일 크게) */
+  .approval { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02)); border-color: var(--gold); }
+  .approval .big { font-family: 'Fraunces', serif; font-size: 72px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .approval .label { font-size: 14px; color: var(--cream-dim); margin-top: 8px; }
+  .approval .empty { font-size: 18px; color: var(--cream-dim); padding: 24px 0; }
+
+  /* 메일 카드 */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .stat { padding: 12px 0; }
+  .stat .n { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 600; color: var(--gold); line-height: 1; }
+  .stat .l { font-size: 11px; color: var(--cream-dim); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .progress { margin-top: 16px; height: 6px; background: rgba(201,168,76,0.15); border-radius: 999px; overflow: hidden; }
+  .progress-bar { height: 100%; background: var(--gold); transition: width 0.4s; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--cream-dim); margin-top: 6px; }
+
+  /* 시스템 카드 */
+  .sys-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .sys-row:last-child { border: none; }
+  .sys-label { color: var(--cream-dim); }
+  .sys-val { font-weight: 500; }
+  .ok { color: var(--green); }
+  .pending { color: var(--amber); }
+  .off { color: var(--gray); }
+
+  /* 직원 카드 */
+  .employees { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .emp { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(0,77,64,0.5); border: 1px solid var(--line); border-radius: 10px; font-size: 13px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .dot.live { background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,0.6); }
+  .dot.ready { background: var(--amber); }
+  .dot.plan { background: var(--gray); opacity: 0.5; }
+  .emp .role { color: var(--cream); font-weight: 500; }
+  .emp .tool { color: var(--cream-dim); font-size: 11px; margin-left: auto; }
+
+  /* 최근 요청 */
+  .recent-row { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .recent-row:last-child { border: none; }
+  .recent-row .when { color: var(--cream-dim); font-size: 11px; margin-bottom: 4px; }
+  .recent-row .who { color: var(--gold); font-weight: 500; margin-right: 8px; font-size: 12px; }
+
+  footer { text-align: center; color: var(--cream-dim); font-size: 11px; margin-top: 32px; padding: 16px; }
+  footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>VECTIVA</h1>
+    <span class="pill on" id="db-pill">DB 연결</span>
+    <span class="pill on" id="gmail-pill">Gmail 연결</span>
+    <span class="pill warn" id="send-pill">실제발송 OFF</span>
+    <span class="updated" id="updated-at">—</span>
+  </header>
+
+  <div class="grid">
+    <!-- 승인 카드 (제일 크게, 왼쪽) -->
+    <section class="card approval">
+      <h2>✅ 내가 할 일 — 승인</h2>
+      <div id="approval-content">
+        <div class="big" id="approval-count">0</div>
+        <div class="label">건이 승인 대기 중</div>
+      </div>
+    </section>
+
+    <!-- 시스템 카드 -->
+    <section class="card">
+      <h2>🖥️ 시스템</h2>
+      <div class="sys-row"><span class="sys-label">Supabase DB</span><span class="sys-val ok" id="sys-db">연결됨</span></div>
+      <div class="sys-row"><span class="sys-label">Gmail 발신</span><span class="sys-val ok" id="sys-gmail">ceo@vectiva.io</span></div>
+      <div class="sys-row"><span class="sys-label">실제 발송</span><span class="sys-val pending" id="sys-send">OFF (연습모드)</span></div>
+      <div class="sys-row"><span class="sys-label">맥미니 (JARVIS)</span><span class="sys-val ok" id="sys-jarvis">가동</span></div>
+      <div class="sys-row"><span class="sys-label">텔레그램 봇</span><span class="sys-val ok" id="sys-tg">VECTIVA_JARVIS_bot</span></div>
+    </section>
+
+    <!-- 메일 카드 -->
+    <section class="card full">
+      <h2>📧 영업·투자 메일</h2>
+      <div class="stats">
+        <div class="stat"><div class="n" id="mail-pending">0</div><div class="l">승인 대기</div></div>
+        <div class="stat"><div class="n" id="mail-sent">0</div><div class="l">오늘 보냄</div></div>
+        <div class="stat"><div class="n" id="mail-reply">0</div><div class="l">답장</div></div>
+      </div>
+      <div class="progress"><div class="progress-bar" id="mail-progress" style="width:0%"></div></div>
+      <div class="progress-label"><span id="mail-current">0</span><span id="mail-target">/ 1500 (5일)</span></div>
+    </section>
+
+    <!-- 직원 카드 -->
+    <section class="card full">
+      <h2>👥 직원 9명</h2>
+      <div class="employees" id="employees-list"></div>
+    </section>
+
+    <!-- 최근 요청 -->
+    <section class="card full">
+      <h2>🗣️ 최근 내 요청</h2>
+      <div id="recent-list">
+        <div class="recent-row"><div class="when">방금</div><span class="who">CEO</span>대시보드 켜줘</div>
+        <div class="recent-row"><div class="when">10분 전</div><span class="who">CEO</span>메일 에이전트 빠르게 만들어 (1일 1500통)</div>
+        <div class="recent-row"><div class="when">30분 전</div><span class="who">CEO</span>EU/독일 1차 진행 확정</div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    VECTIVA OpenClaw · 자동 30초 갱신 · 데이터는 <a href="https://github.com/jboki/vectiva/blob/claude/trusting-galileo-LOABt/openclaw/dashboard/STATUS.md">STATUS.md</a>
+  </footer>
+
+<script>
+  const EMPLOYEES = [
+    { num: '반장', role: 'JARVIS (자비스)', tool: 'Claude', status: 'live' },
+    { num: 1, role: '리서치', tool: 'Perplexity', status: 'ready' },
+    { num: 2, role: '전략', tool: 'Claude', status: 'ready' },
+    { num: 3, role: '투자유치', tool: 'GPT', status: 'ready' },
+    { num: 4, role: '영업 (메일)', tool: 'Gmail', status: 'live' },
+    { num: 5, role: '소통 (왓츠앱)', tool: '—', status: 'plan' },
+    { num: 6, role: '회의록', tool: '—', status: 'plan' },
+    { num: 7, role: '일정', tool: '—', status: 'plan' },
+    { num: 8, role: '영상', tool: '—', status: 'plan' },
+  ];
+
+  function renderEmployees() {
+    const el = document.getElementById('employees-list');
+    el.innerHTML = EMPLOYEES.map(e => {
+      const num = typeof e.num === 'number' ? `${e.num}.` : e.num;
+      return `<div class="emp"><span class="dot ${e.status}"></span><span class="role">${num} ${e.role}</span><span class="tool">${e.tool}</span></div>`;
+    }).join('');
+  }
+
+  function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+  function updated() { setText('updated-at', new Date().toLocaleString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' 갱신'); }
+
+  async function refresh() {
+    updated();
+    // 데이터 source: 추후 /api/state로 교체. 지금은 정적 데모.
+    try {
+      const r = await fetch('./data.json?t=' + Date.now());
+      if (r.ok) {
+        const d = await r.json();
+        if (d.summary) {
+          setText('approval-count', d.summary.pending_approvals || 0);
+          setText('mail-pending', d.summary.mail_pending || 0);
+          setText('mail-sent', d.summary.mail_sent_today || 0);
+          setText('mail-reply', d.summary.mail_replies || 0);
+          const sent = d.summary.mail_sent_total || 0;
+          setText('mail-current', sent);
+          document.getElementById('mail-progress').style.width = Math.min(100, sent / 15) + '%';
+        }
+        if (d.mode) {
+          const live = d.mode === 'supabase';
+          document.getElementById('db-pill').textContent = live ? 'DB 연결' : 'DB 연습모드';
+          document.getElementById('db-pill').className = 'pill ' + (live ? 'on' : 'warn');
+          setText('sys-db', live ? '연결됨 (Supabase 라이브)' : '연습모드 (Supabase 미연결)');
+        }
+      }
+    } catch (e) { /* keep static */ }
+  }
+
+  renderEmployees();
+  refresh();
+  setInterval(refresh, 30000);
+</script>
+</body>
+</html>
