@@ -9,79 +9,81 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
+    --cream: #FFFCF8;
+    --cream-deep: #F5F0E6;
     --emerald: #004D40;
-    --emerald-deep: #00332C;
+    --emerald-soft: #00665A;
     --gold: #C9A84C;
     --gold-soft: #E8C97A;
-    --cream: #FFFCF8;
-    --cream-dim: rgba(255,252,248,0.72);
-    --line: rgba(201,168,76,0.22);
-    --green: #4ADE80;
-    --amber: #FACC15;
+    --ink: #1A2E2A;
+    --ink-dim: rgba(26,46,42,0.65);
+    --line: rgba(0,77,64,0.12);
+    --green: #00875F;
+    --amber: #B07D00;
     --gray: #94A3B8;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { background: var(--emerald); color: var(--cream); font-family: 'Archivo', -apple-system, sans-serif; min-height: 100vh; }
-  body { padding: 20px; max-width: 1200px; margin: 0 auto; }
+  html, body { background: var(--cream); color: var(--ink); font-family: 'Archivo', -apple-system, sans-serif; min-height: 100vh; }
+  body { padding: 24px; max-width: 1200px; margin: 0 auto; }
   h1, h2, .display { font-family: 'Fraunces', Georgia, serif; font-weight: 600; }
 
-  .topbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
-  .topbar h1 { font-size: 28px; color: var(--gold); flex: 1; min-width: 200px; letter-spacing: -0.02em; }
-  .pill { padding: 6px 14px; border-radius: 999px; background: rgba(201,168,76,0.12); border: 1px solid var(--line); font-size: 12px; font-weight: 500; color: var(--cream-dim); }
-  .pill.on { background: rgba(74,222,128,0.18); border-color: rgba(74,222,128,0.4); color: var(--green); }
-  .pill.warn { background: rgba(250,204,21,0.18); border-color: rgba(250,204,21,0.4); color: var(--amber); }
-  .updated { font-size: 11px; color: var(--cream-dim); }
+  .topbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid var(--gold); }
+  .topbar h1 { font-size: 32px; color: var(--emerald); flex: 1; min-width: 200px; letter-spacing: -0.02em; }
+  .pill { padding: 6px 14px; border-radius: 999px; background: var(--cream-deep); border: 1px solid var(--line); font-size: 12px; font-weight: 500; color: var(--ink-dim); }
+  .pill.on { background: rgba(0,135,95,0.1); border-color: rgba(0,135,95,0.3); color: var(--green); }
+  .pill.warn { background: rgba(176,125,0,0.12); border-color: rgba(176,125,0,0.3); color: var(--amber); }
+  .updated { font-size: 11px; color: var(--ink-dim); }
 
   .grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
   @media (min-width: 768px) {
     .grid { grid-template-columns: 2fr 1fr; }
     .full { grid-column: 1 / -1; }
   }
-  .card { background: var(--emerald-deep); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
-  .card h2 { font-size: 18px; color: var(--gold); margin-bottom: 16px; letter-spacing: -0.01em; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,77,64,0.04); }
+  .card h2 { font-size: 18px; color: var(--emerald); margin-bottom: 16px; letter-spacing: -0.01em; }
 
   /* 승인 카드 (제일 크게) */
-  .approval { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02)); border-color: var(--gold); }
-  .approval .big { font-family: 'Fraunces', serif; font-size: 72px; font-weight: 700; color: var(--gold); line-height: 1; }
-  .approval .label { font-size: 14px; color: var(--cream-dim); margin-top: 8px; }
-  .approval .empty { font-size: 18px; color: var(--cream-dim); padding: 24px 0; }
+  .approval { background: linear-gradient(135deg, #fff, #FAF6EC); border: 2px solid var(--gold); }
+  .approval .big { font-family: 'Fraunces', serif; font-size: 80px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .approval .label { font-size: 14px; color: var(--ink-dim); margin-top: 8px; }
+  .approval .empty { font-size: 18px; color: var(--ink-dim); padding: 24px 0; }
 
   /* 메일 카드 */
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .stat { padding: 12px 0; }
-  .stat .n { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 600; color: var(--gold); line-height: 1; }
-  .stat .l { font-size: 11px; color: var(--cream-dim); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .progress { margin-top: 16px; height: 6px; background: rgba(201,168,76,0.15); border-radius: 999px; overflow: hidden; }
-  .progress-bar { height: 100%; background: var(--gold); transition: width 0.4s; }
-  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--cream-dim); margin-top: 6px; }
+  .stat .n { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 600; color: var(--emerald); line-height: 1; }
+  .stat .l { font-size: 11px; color: var(--ink-dim); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .progress { margin-top: 16px; height: 8px; background: var(--cream-deep); border-radius: 999px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-soft)); transition: width 0.4s; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-dim); margin-top: 8px; }
 
   /* 시스템 카드 */
-  .sys-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .sys-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
   .sys-row:last-child { border: none; }
-  .sys-label { color: var(--cream-dim); }
+  .sys-label { color: var(--ink-dim); }
   .sys-val { font-weight: 500; }
   .ok { color: var(--green); }
   .pending { color: var(--amber); }
   .off { color: var(--gray); }
 
   /* 직원 카드 */
-  .employees { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
-  .emp { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(0,77,64,0.5); border: 1px solid var(--line); border-radius: 10px; font-size: 13px; }
+  .employees { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .emp { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--cream); border: 1px solid var(--line); border-radius: 10px; font-size: 13px; }
   .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .dot.live { background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,0.6); }
+  .dot.live { background: var(--green); box-shadow: 0 0 6px rgba(0,135,95,0.5); }
   .dot.ready { background: var(--amber); }
   .dot.plan { background: var(--gray); opacity: 0.5; }
-  .emp .role { color: var(--cream); font-weight: 500; }
-  .emp .tool { color: var(--cream-dim); font-size: 11px; margin-left: auto; }
+  .emp .role { color: var(--ink); font-weight: 500; }
+  .emp .tool { color: var(--ink-dim); font-size: 11px; margin-left: auto; }
 
   /* 최근 요청 */
   .recent-row { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
   .recent-row:last-child { border: none; }
-  .recent-row .when { color: var(--cream-dim); font-size: 11px; margin-bottom: 4px; }
-  .recent-row .who { color: var(--gold); font-weight: 500; margin-right: 8px; font-size: 12px; }
+  .recent-row .when { color: var(--ink-dim); font-size: 11px; margin-bottom: 4px; }
+  .recent-row .who { color: var(--gold); font-weight: 600; margin-right: 8px; font-size: 12px; }
 
-  footer { text-align: center; color: var(--cream-dim); font-size: 11px; margin-top: 32px; padding: 16px; }
-  footer a { color: var(--gold); text-decoration: none; }
+  footer { text-align: center; color: var(--ink-dim); font-size: 11px; margin-top: 32px; padding: 16px; }
+  footer a { color: var(--emerald); text-decoration: none; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -94,7 +96,6 @@
   </header>
 
   <div class="grid">
-    <!-- 승인 카드 (제일 크게, 왼쪽) -->
     <section class="card approval">
       <h2>✅ 내가 할 일 — 승인</h2>
       <div id="approval-content">
@@ -103,7 +104,6 @@
       </div>
     </section>
 
-    <!-- 시스템 카드 -->
     <section class="card">
       <h2>🖥️ 시스템</h2>
       <div class="sys-row"><span class="sys-label">Supabase DB</span><span class="sys-val ok" id="sys-db">연결됨</span></div>
@@ -113,7 +113,6 @@
       <div class="sys-row"><span class="sys-label">텔레그램 봇</span><span class="sys-val ok" id="sys-tg">VECTIVA_JARVIS_bot</span></div>
     </section>
 
-    <!-- 메일 카드 -->
     <section class="card full">
       <h2>📧 영업·투자 메일</h2>
       <div class="stats">
@@ -125,25 +124,24 @@
       <div class="progress-label"><span id="mail-current">0</span><span id="mail-target">/ 1500 (5일)</span></div>
     </section>
 
-    <!-- 직원 카드 -->
     <section class="card full">
-      <h2>👥 직원 9명</h2>
+      <h2>👥 에이젼트 9</h2>
       <div class="employees" id="employees-list"></div>
     </section>
 
-    <!-- 최근 요청 -->
     <section class="card full">
       <h2>🗣️ 최근 내 요청</h2>
       <div id="recent-list">
-        <div class="recent-row"><div class="when">방금</div><span class="who">CEO</span>대시보드 켜줘</div>
-        <div class="recent-row"><div class="when">10분 전</div><span class="who">CEO</span>메일 에이전트 빠르게 만들어 (1일 1500통)</div>
-        <div class="recent-row"><div class="when">30분 전</div><span class="who">CEO</span>EU/독일 1차 진행 확정</div>
+        <div class="recent-row"><div class="when">방금</div><span class="who">CEO</span>바탕 크림색 + 텔레그램에 링크 박기</div>
+        <div class="recent-row"><div class="when">5분 전</div><span class="who">CEO</span>대시보드 켜줘</div>
+        <div class="recent-row"><div class="when">30분 전</div><span class="who">CEO</span>메일 에이전트 빠르게 (1일 1500통)</div>
+        <div class="recent-row"><div class="when">1시간 전</div><span class="who">CEO</span>EU/독일 1차 확정</div>
       </div>
     </section>
   </div>
 
   <footer>
-    VECTIVA OpenClaw · 자동 30초 갱신 · 데이터는 <a href="https://github.com/jboki/vectiva/blob/claude/trusting-galileo-LOABt/openclaw/dashboard/STATUS.md">STATUS.md</a>
+    VECTIVA OpenClaw · 자동 30초 갱신 · 데이터 = <a href="https://github.com/jboki/vectiva/blob/claude/trusting-galileo-LOABt/openclaw/dashboard/STATUS.md">STATUS.md</a>
   </footer>
 
 <script>
@@ -172,7 +170,6 @@
 
   async function refresh() {
     updated();
-    // 데이터 source: 추후 /api/state로 교체. 지금은 정적 데모.
     try {
       const r = await fetch('./data.json?t=' + Date.now());
       if (r.ok) {
