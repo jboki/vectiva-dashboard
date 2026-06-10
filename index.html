@@ -68,7 +68,9 @@
 
   /* 직원 카드 */
   .employees { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-  .emp { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--cream); border: 1px solid var(--line); border-radius: 10px; font-size: 13px; }
+  .emp { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--cream); border: 1px solid var(--line); border-radius: 10px; font-size: 13px; cursor: pointer; transition: transform 0.1s, border-color 0.2s; }
+  .emp:hover { border-color: var(--gold); transform: translateY(-1px); }
+  .emp:active { transform: translateY(0); }
   .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
   .dot.live { background: var(--green); box-shadow: 0 0 6px rgba(0,135,95,0.5); }
   .dot.ready { background: var(--amber); }
@@ -146,23 +148,39 @@
 
 <script>
   const EMPLOYEES = [
-    { num: '반장', role: 'JARVIS (자비스)', tool: 'Claude', status: 'live' },
-    { num: 1, role: '리서치', tool: 'Perplexity', status: 'ready' },
-    { num: 2, role: '전략', tool: 'Claude', status: 'ready' },
-    { num: 3, role: '투자유치', tool: 'GPT', status: 'ready' },
-    { num: 4, role: '영업 (메일)', tool: 'Gmail', status: 'live' },
-    { num: 5, role: '소통 (왓츠앱)', tool: '—', status: 'plan' },
-    { num: 6, role: '회의록', tool: '—', status: 'plan' },
-    { num: 7, role: '일정', tool: '—', status: 'plan' },
-    { num: 8, role: '영상', tool: '—', status: 'plan' },
+    { num: '반장', role: 'JARVIS (자비스)', tool: 'Claude', status: 'live',
+      detail: '맥미니에서 1분마다 가동. 큐 명령 처리, git push, GitHub Actions 트리거, 텔레그램 핸들러 실행.' },
+    { num: 1, role: '리서치', tool: 'Perplexity', status: 'ready',
+      detail: 'Perplexity 자료 분류·정본 통합 대기. 13국 country profile 70개 이미 있음. CEO Perplexity 아티팩트(launching_contacts_2000, TAM_SAM_SOM, FactCheck_30 등) 가져오면 즉시 가동.' },
+    { num: 2, role: '전략', tool: 'Claude', status: 'ready',
+      detail: 'corridor 우선순위, V1 lock, 7표 protocol 정본화 완료 (§29~§33). 다음 = 첫 거래 pilot 메트릭 설계.' },
+    { num: 3, role: '투자유치', tool: 'GPT', status: 'ready',
+      detail: 'Angel 1pager·VC deck v1 정본 있음. Angel_LongList_100.csv 받으면 outreach 시작. 시리즈 A 합류자 4명 확정.' },
+    { num: 4, role: '영업 (메일)', tool: 'Gmail', status: 'live',
+      detail: 'mail_outreach.js + Gmail Workspace + 30분 cron. 템플릿 한국어 v3.5 준비. recipients.csv 받으면 즉시 1500/일 발송 시작.' },
+    { num: 5, role: '소통 (왓츠앱)', tool: '—', status: 'plan',
+      detail: 'WhatsApp Business API 미연결. 베타 런칭 후 1순위 = 모로코·UAE 딜러 소통.' },
+    { num: 6, role: '회의록', tool: '—', status: 'plan',
+      detail: 'Zoom 회의 → 자동 transcript → 결정 추출 → DECISIONS.md 적재. 베타 후 도입.' },
+    { num: 7, role: '일정', tool: '—', status: 'plan',
+      detail: 'Google Calendar 자동 관리. CEO 미팅 조율, 시차 조정, 출장 일정 통합.' },
+    { num: 8, role: '영상', tool: '—', status: 'plan',
+      detail: '다국어 AI 영상 outreach (HeyGen 등). 09_OPERATIONS/video_outreach 스펙 있음, 활성 대기.' },
   ];
 
   function renderEmployees() {
     const el = document.getElementById('employees-list');
-    el.innerHTML = EMPLOYEES.map(e => {
+    el.innerHTML = EMPLOYEES.map((e, i) => {
       const num = typeof e.num === 'number' ? `${e.num}.` : e.num;
-      return `<div class="emp"><span class="dot ${e.status}"></span><span class="role">${num} ${e.role}</span><span class="tool">${e.tool}</span></div>`;
+      return `<div class="emp" onclick="showAgent(${i})"><span class="dot ${e.status}"></span><span class="role">${num} ${e.role}</span><span class="tool">${e.tool}</span></div>`;
     }).join('');
+  }
+
+  function showAgent(i) {
+    const e = EMPLOYEES[i];
+    const num = typeof e.num === 'number' ? `${e.num}` : e.num;
+    const statusKo = { live: '🟢 가동 중', ready: '🟡 준비됨 (대기)', plan: '⚪ 계획' }[e.status];
+    alert(`에이젼트 ${num}. ${e.role}\n도구: ${e.tool}\n상태: ${statusKo}\n\n${e.detail}`);
   }
 
   function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
