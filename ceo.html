@@ -47,6 +47,19 @@
   .approval .big { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 80px; font-weight: 700; color: var(--gold); line-height: 1; }
   .approval .label { font-size: 14px; color: var(--ink-dim); margin-top: 8px; }
   .approval .empty { font-size: 18px; color: var(--ink-dim); padding: 24px 0; }
+  .batch { background: #fff; border: 1px solid var(--gold); border-radius: 12px; padding: 16px; margin-top: 12px; }
+  .batch-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .batch-id { font-weight: 700; color: var(--emerald); font-size: 16px; }
+  .batch-count { color: var(--gold); font-weight: 600; font-size: 14px; }
+  .batch-rationale { color: var(--ink-dim); font-size: 13px; margin-bottom: 12px; line-height: 1.5; }
+  .batch-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; transition: opacity 0.2s; cursor: pointer; border: none; font-family: inherit; }
+  .btn:hover { opacity: 0.85; }
+  .btn-approve { background: var(--green); color: #fff; }
+  .btn-reject { background: #fff; color: var(--ink-dim); border: 1px solid var(--line); }
+  .btn-view { background: var(--cream-deep); color: var(--emerald); border: 1px solid var(--line); }
+  .batch-status-approved { color: var(--green); font-weight: 600; }
+  .batch-status-sent { color: var(--gray); font-weight: 600; }
 
   /* 메일 카드 */
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -98,11 +111,12 @@
   </header>
 
   <div class="grid">
-    <section class="card approval">
-      <h2>✅ 내가 할 일 — 승인</h2>
+    <section class="card approval full">
+      <h2>✅ 내가 할 일 — 메일 발송 승인</h2>
       <div id="approval-content">
         <div class="big" id="approval-count">0</div>
         <div class="label">건이 승인 대기 중</div>
+        <div id="mail-batches-list" style="margin-top:20px"></div>
       </div>
     </section>
 
@@ -186,6 +200,50 @@
   function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
   function updated() { setText('updated-at', new Date().toLocaleString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' 갱신'); }
 
+  // 텔레그램 봇 이름 (BotFather에서 등록한 이름). t.me deep link 용.
+  const TELEGRAM_BOT = 'VECTIVA_JARVIS_bot';
+
+  function renderMailBatches(batches) {
+    const el = document.getElementById('mail-batches-list');
+    if (!el) return;
+    if (!batches) { el.innerHTML = ''; return; }
+    const pending = (batches.pending || []);
+    const approved = (batches.approved || []);
+    const allActive = pending.concat(approved);
+    if (!allActive.length) {
+      el.innerHTML = '<div class="empty" style="text-align:center;padding:8px 0;color:var(--ink-dim);font-size:13px">대기·승인 batch 없음</div>';
+      return;
+    }
+    el.innerHTML = allActive.map(b => {
+      const approveLink = `https://t.me/${TELEGRAM_BOT}?text=` + encodeURIComponent('/approve ' + b.id);
+      const rejectLink  = `https://t.me/${TELEGRAM_BOT}?text=` + encodeURIComponent('/reject ' + b.id);
+      const viewLink = `https://github.com/jboki/vectiva/blob/claude/trusting-galileo-LOABt/openclaw/mail/pending_batches/${b.id}.json`;
+      const actionsUrl = `https://github.com/jboki/vectiva/actions/workflows/mail-outreach.yml`;
+      const isApproved = b.status === 'approved';
+      return `
+        <div class="batch">
+          <div class="batch-head">
+            <span class="batch-id">${b.id}</span>
+            <span class="batch-count">수신자 ${b.count}명</span>
+          </div>
+          <div class="batch-rationale">${(b.rationale || '(설명 없음)').replace(/</g,'&lt;')}</div>
+          ${isApproved ? `
+            <div class="batch-status-approved">✅ 승인됨 — GitHub Actions에서 실제 발송 1회 더 클릭 필요</div>
+            <div class="batch-actions" style="margin-top:10px">
+              <a class="btn btn-approve" href="${actionsUrl}" target="_blank">🚀 GitHub에서 발송</a>
+              <a class="btn btn-view" href="${viewLink}" target="_blank">📄 명단 보기</a>
+            </div>
+          ` : `
+            <div class="batch-actions">
+              <a class="btn btn-approve" href="${approveLink}" target="_blank">✅ 승인 (텔레그램)</a>
+              <a class="btn btn-reject" href="${rejectLink}" target="_blank">❌ 거부</a>
+              <a class="btn btn-view" href="${viewLink}" target="_blank">📄 명단 보기</a>
+            </div>
+          `}
+        </div>`;
+    }).join('');
+  }
+
   async function refresh() {
     updated();
     try {
@@ -201,12 +259,18 @@
           setText('mail-current', sent);
           document.getElementById('mail-progress').style.width = Math.min(100, sent / 15) + '%';
         }
+        renderMailBatches(d.mail_batches);
         if (d.mode) {
           const live = d.mode === 'supabase';
           document.getElementById('db-pill').textContent = live ? 'DB 연결' : 'DB 연습모드';
           document.getElementById('db-pill').className = 'pill ' + (live ? 'on' : 'warn');
           setText('sys-db', live ? '연결됨 (Supabase 라이브)' : '연습모드 (Supabase 미연결)');
         }
+        // 발송 상태 표시 갱신 (cron 폐지 반영)
+        setText('sys-send', 'cron 폐지 (수동 승인만)');
+        document.getElementById('sys-send').className = 'sys-val ok';
+        const sp = document.getElementById('send-pill');
+        if (sp) { sp.textContent = '발송 = 수동 승인만'; sp.className = 'pill on'; }
       }
     } catch (e) { /* keep static */ }
   }
