@@ -1,1 +1,638 @@
-{"mode":"supabase","summary":{"pending_approvals":0,"mail_pending":1500,"mail_sent_today":0,"mail_replies":0,"mail_sent_total":0}}
+{
+  "generated_at": "2026-06-10T06:10:54.050Z",
+  "mode": "supabase",
+  "summary": {
+    "agents_active": 5,
+    "agents_total": 13,
+    "nodes_online": 1,
+    "nodes_total": 5,
+    "open_tasks": 10,
+    "pending_approvals": 1,
+    "open_blockers": 0,
+    "research_items": 0,
+    "mail_pending": 1,
+    "mail_approved": 0,
+    "mail_sent_today": 85,
+    "mail_sent_total": 79,
+    "mail_replies": 0
+  },
+  "mail_batches": {
+    "pending": [
+      {
+        "id": "APOLOGY-2026-06-10-001",
+        "created_at": "2026-06-10T04:45:00Z",
+        "count": 77,
+        "status": "pending",
+        "rationale": "2026-06-10 새벽 무단 발송된 한국어 cold mail 84통에 대한 사과 + GDPR 삭제권 안내. 영문 본문."
+      }
+    ],
+    "approved": [],
+    "sent": [
+      {
+        "id": "ANTHROPIC-SUPPORT-001",
+        "created_at": "2026-06-10T04:30:00Z",
+        "count": 1,
+        "status": "sent",
+        "rationale": "Anthropic 환불 요청 + 사고 보고. CEO 직접 명령으로 승인.",
+        "approved_at": "2026-06-10T04:30:00Z",
+        "sent_at": "2026-06-10T04:36:08.299Z",
+        "sent_run_url": "https://github.com/jboki/vectiva/actions/runs/27253468880"
+      }
+    ],
+    "rejected": []
+  },
+  "recent_raw_inbox": [
+    {
+      "id": "ee312fe0-0ad7-43dd-9738-3a275a512279",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T06:10:50.73+00:00"
+    },
+    {
+      "id": "f7563ff0-6006-4d0c-977c-f7ae4f145bcb",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T04:52:10.476+00:00"
+    },
+    {
+      "id": "791df456-82e4-4f3a-bbf9-4169dc2937cb",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T04:43:23.239+00:00"
+    },
+    {
+      "id": "72579e61-ee08-477d-973b-bc25d0ae7f79",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T04:30:42.318+00:00"
+    },
+    {
+      "id": "26d58739-5318-4773-b7ac-21d06a55e8f7",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T04:28:28.339+00:00"
+    },
+    {
+      "id": "f60d07f2-ad30-4f39-ba2a-068ba28b09b7",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T03:59:10.446+00:00"
+    },
+    {
+      "id": "a89a76a4-e3cd-40f3-be69-69288ea315ec",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T03:58:37.537+00:00"
+    },
+    {
+      "id": "63492f70-8e8c-44d1-8ff4-c7c8ac32abbf",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T03:47:48.452+00:00"
+    },
+    {
+      "id": "5ec5d9d1-4b16-460c-83b1-76f56160bf7b",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T03:13:19.597+00:00"
+    },
+    {
+      "id": "2aebfdc2-4d85-42a5-9d70-84fdc05b6c75",
+      "source": "telegram",
+      "channel": "ceo",
+      "content": "UAE → 케냐 corridor 리서치 시작해줘",
+      "classified_category": null,
+      "status": "new",
+      "task_id": null,
+      "received_at": "2026-06-10T03:12:18.649+00:00"
+    }
+  ],
+  "open_tasks": [
+    {
+      "id": "c7d53c95-e301-4b22-b677-8661831bd218",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "ee312fe0-0ad7-43dd-9738-3a275a512279",
+      "created_at": "2026-06-10T06:10:51.998523+00:00",
+      "updated_at": "2026-06-10T06:10:51.998523+00:00"
+    },
+    {
+      "id": "d567207d-75d8-4ab4-b83a-e66373c754a4",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "f7563ff0-6006-4d0c-977c-f7ae4f145bcb",
+      "created_at": "2026-06-10T04:52:11.128919+00:00",
+      "updated_at": "2026-06-10T04:52:11.128919+00:00"
+    },
+    {
+      "id": "0a9af078-cdb1-4584-b62b-f9460a310a17",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "791df456-82e4-4f3a-bbf9-4169dc2937cb",
+      "created_at": "2026-06-10T04:43:23.747572+00:00",
+      "updated_at": "2026-06-10T04:43:23.747572+00:00"
+    },
+    {
+      "id": "34fc8734-a996-4a5c-927b-2c423affd6bc",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "72579e61-ee08-477d-973b-bc25d0ae7f79",
+      "created_at": "2026-06-10T04:30:43.873475+00:00",
+      "updated_at": "2026-06-10T04:30:43.873475+00:00"
+    },
+    {
+      "id": "13a28cc5-033f-4ea4-9121-79aae7a02e97",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "26d58739-5318-4773-b7ac-21d06a55e8f7",
+      "created_at": "2026-06-10T04:28:28.863901+00:00",
+      "updated_at": "2026-06-10T04:28:28.863901+00:00"
+    },
+    {
+      "id": "60b822e7-7a19-4d00-b5d3-f0f268df9630",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "f60d07f2-ad30-4f39-ba2a-068ba28b09b7",
+      "created_at": "2026-06-10T03:59:11.096866+00:00",
+      "updated_at": "2026-06-10T03:59:11.096866+00:00"
+    },
+    {
+      "id": "9ce4937d-d52d-4909-8332-8f3a835b7823",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "a89a76a4-e3cd-40f3-be69-69288ea315ec",
+      "created_at": "2026-06-10T03:58:39.571757+00:00",
+      "updated_at": "2026-06-10T03:58:39.571757+00:00"
+    },
+    {
+      "id": "7dc779df-40c4-41f3-a140-3d1f9b2623e5",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "63492f70-8e8c-44d1-8ff4-c7c8ac32abbf",
+      "created_at": "2026-06-10T03:47:49.283333+00:00",
+      "updated_at": "2026-06-10T03:47:49.283333+00:00"
+    },
+    {
+      "id": "c4f47924-ec73-4f24-863a-4c60b6c19e46",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "5ec5d9d1-4b16-460c-83b1-76f56160bf7b",
+      "created_at": "2026-06-10T03:13:21.30253+00:00",
+      "updated_at": "2026-06-10T03:13:21.30253+00:00"
+    },
+    {
+      "id": "086698a8-430f-4f48-908c-aff73e8a6a32",
+      "title": "UAE → 케냐 corridor 리서치 시작해줘",
+      "description": "UAE → 케냐 corridor 리서치 시작해줘",
+      "category": "research",
+      "status": "queued",
+      "priority": 3,
+      "assigned_agent": "research_agent",
+      "assigned_node": "CONTROL",
+      "source_inbox_id": "2aebfdc2-4d85-42a5-9d70-84fdc05b6c75",
+      "created_at": "2026-06-10T03:12:19.720615+00:00",
+      "updated_at": "2026-06-10T03:12:19.720615+00:00"
+    }
+  ],
+  "pending_approvals": [],
+  "agents": [
+    {
+      "id": "18292370-a49b-4072-bb48-271b80d0d68f",
+      "name": "strategy_agent",
+      "role": "전략 정본 관리",
+      "type": "strategy",
+      "status": "active",
+      "preferred_tool": "Claude",
+      "home_node": "CONTROL",
+      "doc_path": "openclaw/agents/strategy-agent.md",
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "d021d436-e669-4984-b85a-ede71fa5f698",
+      "name": "research_agent",
+      "role": "리서치 수집·분류 (→ /research)",
+      "type": "research",
+      "status": "active",
+      "preferred_tool": "Perplexity",
+      "home_node": "CONTROL",
+      "doc_path": "openclaw/agents/research_agent/AGENT.md",
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "51d6c6d2-c0d5-4e1d-8409-3226bb7a9520",
+      "name": "news_radar_agent",
+      "role": "뉴스·리스크 레이더",
+      "type": "news",
+      "status": "planned",
+      "preferred_tool": "Perplexity",
+      "home_node": "CONTROL",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "2fc7fa57-a0b4-47a7-9741-bd88f801a2d3",
+      "name": "memory_context_agent",
+      "role": "메모리·컨텍스트 팩 관리",
+      "type": "memory",
+      "status": "active",
+      "preferred_tool": "Claude",
+      "home_node": "CONTROL",
+      "doc_path": "openclaw/agents/memory_context_agent/AGENT.md",
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "c563eec1-bf84-4e4d-b668-703540380a73",
+      "name": "meeting_promise_agent",
+      "role": "미팅·약속·후속 추적",
+      "type": "meeting",
+      "status": "active",
+      "preferred_tool": "GPT",
+      "home_node": "CONTROL",
+      "doc_path": "openclaw/agents/meeting_promise_agent/AGENT.md",
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "06cc2d9a-0e1f-4870-afa5-a8a325a623fd",
+      "name": "listing_delta_agent",
+      "role": "매물 변동 추적",
+      "type": "data",
+      "status": "planned",
+      "preferred_tool": "Codex",
+      "home_node": "DATA",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "a652ebe1-707c-4db5-adbb-5d84f6e2ef69",
+      "name": "leader_agent",
+      "role": "CEO 명령 라우팅·총괄 오케스트레이션",
+      "type": "router",
+      "status": "active",
+      "preferred_tool": "Claude",
+      "home_node": "CONTROL",
+      "doc_path": "openclaw/agents/leader_agent/AGENT.md",
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "c21f4c1f-081f-4f85-881c-e127aec58425",
+      "name": "investor_agent",
+      "role": "투자자 자료·근거",
+      "type": "investor",
+      "status": "planned",
+      "preferred_tool": "GPT",
+      "home_node": "CONTROL",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "20dd0557-8dae-4262-90be-aa0b6fae041f",
+      "name": "document_agent",
+      "role": "문서 생성·정리",
+      "type": "document",
+      "status": "planned",
+      "preferred_tool": "Claude",
+      "home_node": "CONTROL",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "ac90e0e7-cebc-42f2-a7f0-b80bade195df",
+      "name": "devpm_agent",
+      "role": "개발 PM·릴리스",
+      "type": "devpm",
+      "status": "planned",
+      "preferred_tool": "Codex",
+      "home_node": "MAIN",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "394479ed-29a5-48d5-aa95-ced45b4acc90",
+      "name": "data_crawler_agent",
+      "role": "매물·데이터 크롤",
+      "type": "crawler",
+      "status": "planned",
+      "preferred_tool": "Codex",
+      "home_node": "DATA",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "7d823d71-1083-4869-b56a-a7c15d86fcc2",
+      "name": "dashboard_agent",
+      "role": "대시보드 빌드",
+      "type": "dashboard",
+      "status": "planned",
+      "preferred_tool": "Claude",
+      "home_node": "CONTROL",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "39207f4e-4397-4e21-9bf6-ce0a66745576",
+      "name": "competitor_capture_agent",
+      "role": "경쟁사 앱 캡처",
+      "type": "capture",
+      "status": "planned",
+      "preferred_tool": "Gemini",
+      "home_node": "MOBILE-CONTROL-01",
+      "doc_path": null,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "807e4d18-b55d-4c90-b892-0f38936dfeed",
+      "code": "MOBILE-CONTROL-01",
+      "name": "Galaxy A",
+      "role": "모바일 캡처·멀티계정",
+      "spec": "Galaxy A 시리즈",
+      "location": "한국 본진",
+      "status": "offline",
+      "is_24h": false,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "84d46dfa-ae8b-4a3c-900e-6a7c34206849",
+      "code": "MAIN",
+      "name": "본체(Ryzen)",
+      "role": "빌드·앱 개발·로컬 LLM",
+      "spec": "7500F / 32GB / RTX 4060",
+      "location": "한국 본진",
+      "status": "standby",
+      "is_24h": false,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "fa8f39f1-8ad6-4ab7-82f3-9c51a3dfb1c0",
+      "code": "FIELD",
+      "name": "삼성 750XGK",
+      "role": "분산 크롤·멀티 노드",
+      "spec": "i3-1315U / 16GB",
+      "location": "한국 본진",
+      "status": "offline",
+      "is_24h": false,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "6af74313-a392-4d58-827b-b6580803fd5a",
+      "code": "DATA",
+      "name": "본체(Ryzen)",
+      "role": "DB·크롤러·가격 엔진·폰 허브",
+      "spec": "5600 / 16GB / RTX 4060",
+      "location": "한국 본진",
+      "status": "standby",
+      "is_24h": false,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    },
+    {
+      "id": "b059e34a-b636-4c17-8b47-29ec88e7d1aa",
+      "code": "CONTROL",
+      "name": "Mac mini",
+      "role": "OpenClaw 호스트·오케스트레이터",
+      "spec": "Mac mini M4 / 24GB / 512GB",
+      "location": "한국 본진",
+      "status": "online",
+      "is_24h": true,
+      "created_at": "2026-06-06T11:46:17.698071+00:00",
+      "updated_at": "2026-06-06T11:46:17.698071+00:00"
+    }
+  ],
+  "latest_research": [],
+  "latest_audit": [
+    {
+      "id": "fdee9d12-15db-464f-8384-2ca935b585f8",
+      "actor": "leader_agent",
+      "action": "route",
+      "entity": "task",
+      "entity_id": null,
+      "detail": "→ research_agent",
+      "created_at": "2026-06-10T06:10:51.647+00:00"
+    },
+    {
+      "id": "bd30d59f-d369-4fb6-a13d-f1fd2a2df0b3",
+      "actor": "leader_agent",
+      "action": "classify",
+      "entity": "raw_inbox",
+      "entity_id": null,
+      "detail": "research/research :: UAE → 케냐 corridor 리서치 시작해줘",
+      "created_at": "2026-06-10T06:10:51.412+00:00"
+    },
+    {
+      "id": "a6d9d22c-4b67-4b55-9d59-42276a0bd0a9",
+      "actor": "openclaw",
+      "action": "heartbeat",
+      "entity": "nodes",
+      "entity_id": null,
+      "detail": "5 nodes",
+      "created_at": "2026-06-10T06:10:50.035+00:00"
+    },
+    {
+      "id": "d267a460-2a90-4e1d-b74f-17f0e3efc538",
+      "actor": "openclaw",
+      "action": "dashboard_build",
+      "entity": "dashboard",
+      "entity_id": null,
+      "detail": "mode=supabase",
+      "created_at": "2026-06-10T04:52:12.724+00:00"
+    },
+    {
+      "id": "9566a9c0-aa43-4b75-b4a6-cfd9c2e023a8",
+      "actor": "leader_agent",
+      "action": "route",
+      "entity": "task",
+      "entity_id": null,
+      "detail": "→ research_agent",
+      "created_at": "2026-06-10T04:52:10.857+00:00"
+    },
+    {
+      "id": "6f10fd93-302a-40d0-b5b4-12ead10a55a2",
+      "actor": "leader_agent",
+      "action": "classify",
+      "entity": "raw_inbox",
+      "entity_id": null,
+      "detail": "research/research :: UAE → 케냐 corridor 리서치 시작해줘",
+      "created_at": "2026-06-10T04:52:10.673+00:00"
+    },
+    {
+      "id": "df05b223-e00d-4db1-8015-9f533f2c30dc",
+      "actor": "openclaw",
+      "action": "heartbeat",
+      "entity": "nodes",
+      "entity_id": null,
+      "detail": "5 nodes",
+      "created_at": "2026-06-10T04:52:10.271+00:00"
+    },
+    {
+      "id": "5fed9510-1672-4243-9344-c1719a9f6fc4",
+      "actor": "openclaw",
+      "action": "dashboard_build",
+      "entity": "dashboard",
+      "entity_id": null,
+      "detail": "mode=supabase",
+      "created_at": "2026-06-10T04:43:25.228+00:00"
+    },
+    {
+      "id": "1116c6a9-a00a-46cd-9948-6a78681f123f",
+      "actor": "leader_agent",
+      "action": "route",
+      "entity": "task",
+      "entity_id": null,
+      "detail": "→ research_agent",
+      "created_at": "2026-06-10T04:43:23.527+00:00"
+    },
+    {
+      "id": "c11c83ab-2272-4474-a660-d336d5bfaed6",
+      "actor": "leader_agent",
+      "action": "classify",
+      "entity": "raw_inbox",
+      "entity_id": null,
+      "detail": "research/research :: UAE → 케냐 corridor 리서치 시작해줘",
+      "created_at": "2026-06-10T04:43:23.388+00:00"
+    },
+    {
+      "id": "b880f4f9-cfdc-49c4-adb2-427b3935d009",
+      "actor": "openclaw",
+      "action": "heartbeat",
+      "entity": "nodes",
+      "entity_id": null,
+      "detail": "5 nodes",
+      "created_at": "2026-06-10T04:43:23.008+00:00"
+    },
+    {
+      "id": "32399f92-8e6e-4a9d-92fa-97a7faa809d5",
+      "actor": "openclaw",
+      "action": "dashboard_build",
+      "entity": "dashboard",
+      "entity_id": null,
+      "detail": "mode=supabase",
+      "created_at": "2026-06-10T04:30:47.373+00:00"
+    },
+    {
+      "id": "944ae460-b33b-42d9-b6de-637f0aee2f77",
+      "actor": "leader_agent",
+      "action": "route",
+      "entity": "task",
+      "entity_id": null,
+      "detail": "→ research_agent",
+      "created_at": "2026-06-10T04:30:43.554+00:00"
+    },
+    {
+      "id": "357c4a3f-c095-470e-8845-44b65a140b46",
+      "actor": "leader_agent",
+      "action": "classify",
+      "entity": "raw_inbox",
+      "entity_id": null,
+      "detail": "research/research :: UAE → 케냐 corridor 리서치 시작해줘",
+      "created_at": "2026-06-10T04:30:42.919+00:00"
+    },
+    {
+      "id": "e0ed4f24-9899-4dca-8abb-84a527407d4c",
+      "actor": "openclaw",
+      "action": "heartbeat",
+      "entity": "nodes",
+      "entity_id": null,
+      "detail": "5 nodes",
+      "created_at": "2026-06-10T04:30:41.694+00:00"
+    }
+  ],
+  "blockers": []
+}
