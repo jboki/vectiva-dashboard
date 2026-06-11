@@ -141,7 +141,7 @@
     </section>
 
     <section class="card full">
-      <h2>👥 에이젼트 9</h2>
+      <h2>👥 에이젼트 10</h2>
       <div class="employees" id="employees-list"></div>
     </section>
 
@@ -180,6 +180,8 @@
       detail: 'Google Calendar 자동 관리. CEO 미팅 조율, 시차 조정, 출장 일정 통합.' },
     { num: 8, role: '영상', tool: '—', status: 'plan',
       detail: '다국어 AI 영상 outreach (HeyGen 등). 09_OPERATIONS/video_outreach 스펙 있음, 활성 대기.' },
+    { num: 9, role: '차량 재고·판매', tool: 'Dashboard', status: 'live', link: './cars.html',
+      detail: '국내 중고차 매입·재고·광고·판매 관리. 매입가/부대비용, 매입처 링크, 광고 올린 시간(경과일 추적), 시세 검색 링크, 판매 마진 자동 계산. 클릭하면 관리 화면으로 이동.' },
   ];
 
   function renderEmployees() {
@@ -192,6 +194,7 @@
 
   function showAgent(i) {
     const e = EMPLOYEES[i];
+    if (e.link) { location.href = e.link; return; }
     const num = typeof e.num === 'number' ? `${e.num}` : e.num;
     const statusKo = { live: '🟢 가동 중', ready: '🟡 준비됨 (대기)', plan: '⚪ 계획' }[e.status];
     alert(`에이젼트 ${num}. ${e.role}\n도구: ${e.tool}\n상태: ${statusKo}\n\n${e.detail}`);

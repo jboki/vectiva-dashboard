@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VECTIVA · 차량 재고·판매 관리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFFCF8;
+    --cream-deep: #F5F0E6;
+    --emerald: #004D40;
+    --emerald-soft: #00665A;
+    --gold: #C9A84C;
+    --gold-soft: #E8C97A;
+    --ink: #1A2E2A;
+    --ink-dim: rgba(26,46,42,0.65);
+    --line: rgba(0,77,64,0.12);
+    --green: #00875F;
+    --amber: #B07D00;
+    --red: #B3261E;
+    --gray: #94A3B8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--cream); color: var(--ink); font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; min-height: 100vh; }
+  body { padding: 24px; max-width: 1200px; margin: 0 auto; }
+  h1, h2 { font-weight: 700; letter-spacing: -0.02em; }
+
+  .topbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid var(--gold); }
+  .topbar h1 { font-size: 26px; color: var(--emerald); flex: 1; min-width: 200px; }
+  .topbar a.back { font-size: 12px; color: var(--ink-dim); text-decoration: none; }
+  .topbar a.back:hover { color: var(--emerald); }
+  .pill { padding: 6px 14px; border-radius: 999px; background: var(--cream-deep); border: 1px solid var(--line); font-size: 12px; font-weight: 500; color: var(--ink-dim); }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .stat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .stat .n { font-size: 30px; font-weight: 700; color: var(--emerald); line-height: 1.1; }
+  .stat .n.gold { color: var(--gold); }
+  .stat .l { font-size: 11px; color: var(--ink-dim); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: 0 1px 3px rgba(0,77,64,0.04); margin-bottom: 20px; }
+  .card h2 { font-size: 17px; color: var(--emerald); margin-bottom: 14px; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .btn { display: inline-block; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; font-family: inherit; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary { background: var(--emerald); color: #fff; }
+  .btn-gold { background: var(--gold); color: #fff; }
+  .btn-ghost { background: var(--cream-deep); color: var(--emerald); border: 1px solid var(--line); }
+  .btn-sm { padding: 6px 10px; font-size: 11px; border-radius: 6px; }
+  .btn-danger { background: #fff; color: var(--red); border: 1px solid rgba(179,38,30,0.3); }
+
+  /* 폼 */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; color: var(--ink-dim); font-weight: 600; }
+  .field input, .field select, .field textarea {
+    font-family: inherit; font-size: 13px; padding: 9px 11px; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--cream); color: var(--ink); outline: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+  .field.wide { grid-column: 1 / -1; }
+  .form-actions { display: flex; gap: 8px; margin-top: 14px; }
+  #form-card { display: none; }
+  #form-card.open { display: block; }
+
+  /* 필터 탭 */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tab { padding: 7px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; background: var(--cream-deep); border: 1px solid var(--line); color: var(--ink-dim); }
+  .tab.active { background: var(--emerald); color: #fff; border-color: var(--emerald); }
+
+  /* 차량 행 */
+  .car { border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 12px; background: #fff; }
+  .car.sold { opacity: 0.65; }
+  .car-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .car-title { font-size: 15px; font-weight: 700; color: var(--emerald); }
+  .car-plate { font-size: 12px; color: var(--ink-dim); }
+  .badge { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .badge.review { background: rgba(148,163,184,0.15); color: var(--gray); }
+  .badge.bought { background: rgba(176,125,0,0.12); color: var(--amber); }
+  .badge.prep { background: rgba(0,102,90,0.1); color: var(--emerald-soft); }
+  .badge.ad { background: rgba(0,135,95,0.12); color: var(--green); }
+  .badge.sold-b { background: rgba(201,168,76,0.18); color: var(--gold); }
+  .badge.stale { background: rgba(179,38,30,0.1); color: var(--red); }
+  .car-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ink-dim); margin-bottom: 8px; }
+  .car-prices { display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; margin-bottom: 8px; }
+  .car-prices b { color: var(--ink); }
+  .price-buy b { color: var(--amber); }
+  .price-ask b { color: var(--emerald); }
+  .price-sold b { color: var(--gold); }
+  .price-margin b.plus { color: var(--green); }
+  .price-margin b.minus { color: var(--red); }
+  .car-links { display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px; margin-bottom: 10px; }
+  .car-links a { color: var(--emerald); text-decoration: none; font-weight: 600; }
+  .car-links a:hover { text-decoration: underline; }
+  .car-memo { font-size: 12px; color: var(--ink-dim); margin-bottom: 10px; line-height: 1.5; white-space: pre-wrap; }
+  .car-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .empty-list { text-align: center; color: var(--ink-dim); font-size: 13px; padding: 30px 0; }
+
+  footer { text-align: center; color: var(--ink-dim); font-size: 11px; margin-top: 32px; padding: 16px; }
+  footer a { color: var(--emerald); text-decoration: none; font-weight: 500; }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>🚗 차량 재고·판매 관리</h1>
+    <span class="pill" id="store-pill">로컬 저장</span>
+    <a class="back" href="./index.html">← CEO 대시보드</a>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="st-stock">0</div><div class="l">보유 재고</div></div>
+    <div class="stat"><div class="n" id="st-ad">0</div><div class="l">광고중</div></div>
+    <div class="stat"><div class="n" id="st-invested">0</div><div class="l">투입 자금 (만원)</div></div>
+    <div class="stat"><div class="n gold" id="st-sold">0</div><div class="l">판매 완료</div></div>
+    <div class="stat"><div class="n gold" id="st-margin">0</div><div class="l">누적 마진 (만원)</div></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="openForm()">+ 차량 등록</button>
+    <button class="btn btn-ghost" onclick="exportJson()">⬇ JSON 백업</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()">⬆ JSON 불러오기</button>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJson(this)">
+  </div>
+
+  <section class="card" id="form-card">
+    <h2 id="form-title">차량 등록</h2>
+    <input type="hidden" id="f-id">
+    <div class="form-grid">
+      <div class="field wide"><label>차량명 *</label><input id="f-model" placeholder="예: BMW 5시리즈 (G30) 520d M 스포츠 플러스"></div>
+      <div class="field"><label>차량번호</label><input id="f-plate" placeholder="04거4355"></div>
+      <div class="field"><label>연식</label><input id="f-year" placeholder="17/04"></div>
+      <div class="field"><label>주행거리 (km)</label><input id="f-mileage" type="number" placeholder="44200"></div>
+      <div class="field"><label>연료</label><select id="f-fuel"><option>디젤</option><option>가솔린</option><option>하이브리드</option><option>전기</option><option>LPG</option></select></div>
+      <div class="field"><label>상태</label>
+        <select id="f-status">
+          <option value="review">검토중 (매입 후보)</option>
+          <option value="bought">매입 완료</option>
+          <option value="prep">상품화중</option>
+          <option value="ad">광고중</option>
+          <option value="sold">판매 완료</option>
+        </select>
+      </div>
+      <div class="field"><label>매입가 (만원)</label><input id="f-buy-price" type="number" placeholder="2450"></div>
+      <div class="field"><label>매입일</label><input id="f-buy-date" type="date"></div>
+      <div class="field"><label>부대비용 (만원) — 상품화·이전·광고비 등</label><input id="f-extra" type="number" placeholder="0"></div>
+      <div class="field wide"><label>매입처 링크 (사온 곳)</label><input id="f-buy-link" placeholder="https://..."></div>
+      <div class="field"><label>광고 플랫폼</label><select id="f-ad-platform"><option>엔카</option><option>KB차차차</option><option>보배드림</option><option>당근</option><option>중고나라</option><option>기타</option></select></div>
+      <div class="field"><label>광고가 (만원)</label><input id="f-ask-price" type="number" placeholder="2680"></div>
+      <div class="field"><label>광고 올린 시간</label><input id="f-ad-time" type="datetime-local"></div>
+      <div class="field wide"><label>광고 링크</label><input id="f-ad-link" placeholder="https://www.encar.com/..."></div>
+      <div class="field wide"><label>동급 시세 검색 링크 (엔카 검색 URL 등)</label><input id="f-market-link" placeholder="https://www.encar.com/fc/fc_carsearchlist.do?..."></div>
+      <div class="field"><label>판매가 (만원)</label><input id="f-sold-price" type="number"></div>
+      <div class="field"><label>판매일</label><input id="f-sold-date" type="date"></div>
+      <div class="field wide"><label>메모</label><textarea id="f-memo" rows="2" placeholder="동급매물 5대 / 시세대비 92.8% / 엔카진단 ..."></textarea></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="saveCar()">저장</button>
+      <button class="btn btn-ghost" onclick="closeForm()">취소</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>📋 차량 목록</h2>
+    <div class="tabs" id="tabs"></div>
+    <div id="car-list"></div>
+  </section>
+
+  <footer>
+    VECTIVA · 데이터는 이 브라우저(localStorage)에 저장됩니다 · 기기 옮길 땐 <b>JSON 백업</b> 사용
+  </footer>
+
+<script>
+  const KEY = 'vectiva_cars_v1';
+  const STATUS = {
+    review: { label: '검토중', cls: 'review' },
+    bought: { label: '매입완료', cls: 'bought' },
+    prep:   { label: '상품화중', cls: 'prep' },
+    ad:     { label: '광고중', cls: 'ad' },
+    sold:   { label: '판매완료', cls: 'sold-b' },
+  };
+  const STALE_DAYS = 30; // 광고 후 이 일수 넘으면 장기재고 경고
+
+  const SEED = [{
+    id: 'car-' + Date.now(),
+    model: 'BMW 5시리즈 (G30) 520d M 스포츠 플러스',
+    plate: '04거4355',
+    year: '2017-04 (17년형)',
+    mileage: 43789,
+    fuel: '디젤',
+    status: 'ad',
+    buyPrice: 2503,
+    buyDate: '2026-06-11',
+    extra: 70.3,
+    buyLink: '',
+    adPlatform: '엔카',
+    askPrice: 2680,
+    adTime: '2026-06-11T17:52',
+    adLink: '',
+    marketLink: 'https://www.encar.com/fc/fc_carsearchlist.do?carType=for#!%7B%22action%22%3A%22(And.Hidden.N._.(C.CarType.N._.(C.Manufacturer.BMW._.(C.ModelGroup.5%EC%8B%9C%EB%A6%AC%EC%A6%88._.(C.Model.5%EC%8B%9C%EB%A6%AC%EC%A6%88%20(G30_)._.(C.BadgeGroup.%EB%94%94%EC%A0%A4%202WD._.Badge.520d%20M%20%EC%8A%A4%ED%8F%AC%EC%B8%A0%20%ED%94%8C%EB%9F%AC%EC%8A%A4.)))))_.Year.range(201700..201899)._.Mileage.range(20000..70000).)%22%2C%22toggle%22%3A%7B%7D%2C%22layer%22%3A%22%22%2C%22sort%22%3A%22PriceAsc%22%2C%22page%22%3A1%2C%22limit%22%3A20%2C%22searchKey%22%3A%22%22%2C%22loginCheck%22%3Afalse%7D',
+    soldPrice: null,
+    soldDate: '',
+    memo: '블루스톤 / 완전무사고 / 헤딜 제로 매입 (명의이전 완료)\n비용 내역(만원): 차대금 2,503 + 수수료·탁송 54.9 + 성능 4.4 + 광택 11 = 총 2,573.3 / 예상소매 2,700\n엔카: 진단상품 · 정식수입 · 동급매물 5대 · 검색자수 36명(최근4주) · 시세대비 92.8%',
+  }];
+
+  let cars = load();
+  let filter = 'all';
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    localStorage.setItem(KEY, JSON.stringify(SEED));
+    return SEED.slice();
+  }
+  function persist() { localStorage.setItem(KEY, JSON.stringify(cars)); }
+
+  function fmt(n) { return (n === null || n === undefined || n === '' || isNaN(n)) ? '—' : Number(n).toLocaleString('ko-KR'); }
+  function nowLocal(len) { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, len); }
+  function margin(c) {
+    if (c.soldPrice == null || c.buyPrice == null) return null;
+    return Number(c.soldPrice) - Number(c.buyPrice) - Number(c.extra || 0);
+  }
+  function adDays(c) {
+    if (!c.adTime) return null;
+    const d = (Date.now() - new Date(c.adTime).getTime()) / 86400000;
+    return d < 0 ? 0 : Math.floor(d);
+  }
+
+  function renderStats() {
+    const stock = cars.filter(c => c.status !== 'sold' && c.status !== 'review');
+    const ad = cars.filter(c => c.status === 'ad');
+    const sold = cars.filter(c => c.status === 'sold');
+    const invested = stock.reduce((s, c) => s + (Number(c.buyPrice) || 0) + (Number(c.extra) || 0), 0);
+    const totalMargin = sold.reduce((s, c) => s + (margin(c) || 0), 0);
+    document.getElementById('st-stock').textContent = stock.length;
+    document.getElementById('st-ad').textContent = ad.length;
+    document.getElementById('st-invested').textContent = fmt(invested);
+    document.getElementById('st-sold').textContent = sold.length;
+    document.getElementById('st-margin').textContent = fmt(totalMargin);
+  }
+
+  function renderTabs() {
+    const counts = { all: cars.length };
+    Object.keys(STATUS).forEach(k => counts[k] = cars.filter(c => c.status === k).length);
+    const defs = [['all', '전체'], ...Object.entries(STATUS).map(([k, v]) => [k, v.label])];
+    document.getElementById('tabs').innerHTML = defs.map(([k, label]) =>
+      `<span class="tab ${filter === k ? 'active' : ''}" onclick="setFilter('${k}')">${label} ${counts[k]}</span>`
+    ).join('');
+  }
+  function setFilter(f) { filter = f; render(); }
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+
+  function renderList() {
+    const list = cars
+      .filter(c => filter === 'all' || c.status === filter)
+      .slice()
+      .sort((a, b) => (a.status === 'sold') - (b.status === 'sold'));
+    const el = document.getElementById('car-list');
+    if (!list.length) { el.innerHTML = '<div class="empty-list">해당 상태의 차량이 없습니다. 「+ 차량 등록」으로 추가하세요.</div>'; return; }
+    el.innerHTML = list.map(c => {
+      const st = STATUS[c.status] || STATUS.review;
+      const days = adDays(c);
+      const stale = c.status === 'ad' && days !== null && days >= STALE_DAYS;
+      const m = margin(c);
+      const links = [
+        c.buyLink ? `<a href="${esc(c.buyLink)}" target="_blank">매입처 ↗</a>` : '',
+        c.adLink ? `<a href="${esc(c.adLink)}" target="_blank">내 광고 ↗</a>` : '',
+        c.marketLink ? `<a href="${esc(c.marketLink)}" target="_blank">동급 시세 검색 ↗</a>` : '',
+      ].filter(Boolean).join('');
+      return `
+      <div class="car ${c.status === 'sold' ? 'sold' : ''}">
+        <div class="car-head">
+          <span class="car-title">${esc(c.model)}</span>
+          ${c.plate ? `<span class="car-plate">${esc(c.plate)}</span>` : ''}
+          <span class="badge ${st.cls}">${st.label}</span>
+          ${c.status === 'ad' && days !== null ? `<span class="badge ${stale ? 'stale' : 'ad'}">${esc(c.adPlatform)} 광고 ${days}일째${stale ? ' ⚠ 장기' : ''}</span>` : ''}
+        </div>
+        <div class="car-meta">
+          ${c.year ? `<span>연식 ${esc(c.year)}</span>` : ''}
+          ${c.mileage ? `<span>${fmt(c.mileage)} km</span>` : ''}
+          ${c.fuel ? `<span>${esc(c.fuel)}</span>` : ''}
+          ${c.buyDate ? `<span>매입 ${esc(c.buyDate)}</span>` : ''}
+          ${c.adTime ? `<span>광고 ${new Date(c.adTime).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>` : ''}
+          ${c.soldDate ? `<span>판매 ${esc(c.soldDate)}</span>` : ''}
+        </div>
+        <div class="car-prices">
+          <span class="price-buy">매입 <b>${fmt(c.buyPrice)}</b></span>
+          ${Number(c.extra) ? `<span>부대 <b>${fmt(c.extra)}</b></span>` : ''}
+          <span class="price-ask">광고가 <b>${fmt(c.askPrice)}</b></span>
+          ${c.soldPrice != null && c.soldPrice !== '' ? `<span class="price-sold">판매 <b>${fmt(c.soldPrice)}</b></span>` : ''}
+          ${m !== null ? `<span class="price-margin">마진 <b class="${m >= 0 ? 'plus' : 'minus'}">${m >= 0 ? '+' : ''}${fmt(m)}</b></span>` : ''}
+          <span style="color:var(--ink-dim);font-size:11px">(만원)</span>
+        </div>
+        ${links ? `<div class="car-links">${links}</div>` : ''}
+        ${c.memo ? `<div class="car-memo">${esc(c.memo)}</div>` : ''}
+        <div class="car-actions">
+          ${nextStatusBtn(c)}
+          <button class="btn btn-ghost btn-sm" onclick="editCar('${c.id}')">✏ 수정</button>
+          <button class="btn btn-danger btn-sm" onclick="delCar('${c.id}')">삭제</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function nextStatusBtn(c) {
+    const flow = { review: ['bought', '매입 완료로'], bought: ['prep', '상품화로'], prep: ['ad', '광고 시작'], ad: ['sold', '판매 완료'] };
+    const next = flow[c.status];
+    if (!next) return '';
+    return `<button class="btn btn-gold btn-sm" onclick="advance('${c.id}')">→ ${next[1]}</button>`;
+  }
+
+  function advance(id) {
+    const c = cars.find(x => x.id === id);
+    if (!c) return;
+    const flow = { review: 'bought', bought: 'prep', prep: 'ad', ad: 'sold' };
+    const next = flow[c.status];
+    if (!next) return;
+    if (next === 'ad' && !c.adTime) c.adTime = nowLocal(16);
+    if (next === 'sold') {
+      const p = prompt('판매가 (만원)?', c.askPrice || '');
+      if (p === null) return;
+      c.soldPrice = Number(p) || null;
+      c.soldDate = nowLocal(10);
+    }
+    c.status = next;
+    persist(); render();
+  }
+
+  function openForm(c) {
+    document.getElementById('form-card').classList.add('open');
+    document.getElementById('form-title').textContent = c ? '차량 수정' : '차량 등록';
+    document.getElementById('f-id').value = c ? c.id : '';
+    document.getElementById('f-model').value = c ? c.model : '';
+    document.getElementById('f-plate').value = c ? (c.plate || '') : '';
+    document.getElementById('f-year').value = c ? (c.year || '') : '';
+    document.getElementById('f-mileage').value = c && c.mileage != null ? c.mileage : '';
+    document.getElementById('f-fuel').value = c ? (c.fuel || '디젤') : '디젤';
+    document.getElementById('f-status').value = c ? c.status : 'review';
+    document.getElementById('f-buy-price').value = c && c.buyPrice != null ? c.buyPrice : '';
+    document.getElementById('f-buy-date').value = c ? (c.buyDate || '') : '';
+    document.getElementById('f-extra').value = c && c.extra != null ? c.extra : '';
+    document.getElementById('f-buy-link').value = c ? (c.buyLink || '') : '';
+    document.getElementById('f-ad-platform').value = c ? (c.adPlatform || '엔카') : '엔카';
+    document.getElementById('f-ask-price').value = c && c.askPrice != null ? c.askPrice : '';
+    document.getElementById('f-ad-time').value = c ? (c.adTime || '') : '';
+    document.getElementById('f-ad-link').value = c ? (c.adLink || '') : '';
+    document.getElementById('f-market-link').value = c ? (c.marketLink || '') : '';
+    document.getElementById('f-sold-price').value = c && c.soldPrice != null ? c.soldPrice : '';
+    document.getElementById('f-sold-date').value = c ? (c.soldDate || '') : '';
+    document.getElementById('f-memo').value = c ? (c.memo || '') : '';
+    document.getElementById('form-card').scrollIntoView({ behavior: 'smooth' });
+  }
+  function closeForm() { document.getElementById('form-card').classList.remove('open'); }
+
+  function saveCar() {
+    const model = document.getElementById('f-model').value.trim();
+    if (!model) { alert('차량명을 입력하세요.'); return; }
+    const id = document.getElementById('f-id').value || ('car-' + Date.now());
+    const num = v => v === '' ? null : Number(v);
+    const data = {
+      id, model,
+      plate: document.getElementById('f-plate').value.trim(),
+      year: document.getElementById('f-year').value.trim(),
+      mileage: num(document.getElementById('f-mileage').value),
+      fuel: document.getElementById('f-fuel').value,
+      status: document.getElementById('f-status').value,
+      buyPrice: num(document.getElementById('f-buy-price').value),
+      buyDate: document.getElementById('f-buy-date').value,
+      extra: num(document.getElementById('f-extra').value) || 0,
+      buyLink: document.getElementById('f-buy-link').value.trim(),
+      adPlatform: document.getElementById('f-ad-platform').value,
+      askPrice: num(document.getElementById('f-ask-price').value),
+      adTime: document.getElementById('f-ad-time').value,
+      adLink: document.getElementById('f-ad-link').value.trim(),
+      marketLink: document.getElementById('f-market-link').value.trim(),
+      soldPrice: num(document.getElementById('f-sold-price').value),
+      soldDate: document.getElementById('f-sold-date').value,
+      memo: document.getElementById('f-memo').value.trim(),
+    };
+    const i = cars.findIndex(x => x.id === id);
+    if (i >= 0) cars[i] = data; else cars.unshift(data);
+    persist(); closeForm(); render();
+  }
+
+  function editCar(id) { const c = cars.find(x => x.id === id); if (c) openForm(c); }
+  function delCar(id) {
+    const c = cars.find(x => x.id === id);
+    if (!c) return;
+    if (!confirm(`삭제할까요?\n${c.model} ${c.plate || ''}`)) return;
+    cars = cars.filter(x => x.id !== id);
+    persist(); render();
+  }
+
+  function exportJson() {
+    const blob = new Blob([JSON.stringify(cars, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'vectiva-cars-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  function importJson(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!Array.isArray(data)) throw new Error('형식 오류');
+        if (!confirm(`${data.length}대 데이터로 교체할까요? (현재 데이터는 덮어씁니다)`)) return;
+        cars = data;
+        persist(); render();
+      } catch (e) { alert('JSON 파일을 읽을 수 없습니다: ' + e.message); }
+      input.value = '';
+    };
+    reader.readAsText(file);
+  }
+
+  function render() { renderStats(); renderTabs(); renderList(); }
+  render();
+</script>
+</body>
+</html>
