@@ -134,6 +134,7 @@
       <div class="field"><label>연식</label><input id="f-year" placeholder="17/04"></div>
       <div class="field"><label>주행거리 (km)</label><input id="f-mileage" type="number" placeholder="44200"></div>
       <div class="field"><label>연료</label><select id="f-fuel"><option>디젤</option><option>가솔린</option><option>하이브리드</option><option>전기</option><option>LPG</option></select></div>
+      <div class="field"><label>주차위치</label><input id="f-parking" placeholder="예: 매매단지 B동 2층 / 외부 주차장 3열"></div>
       <div class="field"><label>상태</label>
         <select id="f-status">
           <option value="review">검토중 (매입 후보)</option>
@@ -164,6 +165,9 @@
 
   <section class="card">
     <h2>📋 차량 목록</h2>
+    <div class="field" style="margin-bottom:12px">
+      <input id="search" placeholder="🔍 검색 — 차량번호, 차량명, 주차위치, 메모 (예: 4355, G30, B2)" oninput="render()" style="font-size:14px;padding:11px 13px">
+    </div>
     <div class="tabs" id="tabs"></div>
     <div id="car-list"></div>
   </section>
@@ -190,6 +194,7 @@
     year: '2017-04 (17년형)',
     mileage: 43789,
     fuel: '디젤',
+    parking: '',
     status: 'ad',
     buyPrice: 2503,
     buyDate: '2026-06-11',
@@ -207,6 +212,13 @@
 
   let cars = load();
   let filter = 'all';
+
+  function matchesSearch(c, q) {
+    if (!q) return true;
+    const hay = [c.model, c.plate, c.parking, c.memo, c.year, c.fuel, c.adPlatform]
+      .map(v => String(v || '').toLowerCase()).join(' ');
+    return q.toLowerCase().split(/\s+/).every(w => hay.includes(w));
+  }
 
   function load() {
     try {
@@ -256,12 +268,13 @@
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
 
   function renderList() {
+    const q = document.getElementById('search').value.trim();
     const list = cars
-      .filter(c => filter === 'all' || c.status === filter)
+      .filter(c => (filter === 'all' || c.status === filter) && matchesSearch(c, q))
       .slice()
       .sort((a, b) => (a.status === 'sold') - (b.status === 'sold'));
     const el = document.getElementById('car-list');
-    if (!list.length) { el.innerHTML = '<div class="empty-list">해당 상태의 차량이 없습니다. 「+ 차량 등록」으로 추가하세요.</div>'; return; }
+    if (!list.length) { el.innerHTML = `<div class="empty-list">${q ? `「${esc(q)}」 검색 결과 없음` : '해당 상태의 차량이 없습니다. 「+ 차량 등록」으로 추가하세요.'}</div>`; return; }
     el.innerHTML = list.map(c => {
       const st = STATUS[c.status] || STATUS.review;
       const days = adDays(c);
@@ -279,6 +292,7 @@
           ${c.plate ? `<span class="car-plate">${esc(c.plate)}</span>` : ''}
           <span class="badge ${st.cls}">${st.label}</span>
           ${c.status === 'ad' && days !== null ? `<span class="badge ${stale ? 'stale' : 'ad'}">${esc(c.adPlatform)} 광고 ${days}일째${stale ? ' ⚠ 장기' : ''}</span>` : ''}
+          ${c.status !== 'sold' ? `<span class="badge ${c.parking ? 'prep' : 'review'}" style="cursor:pointer" onclick="setParking('${c.id}')" title="클릭해서 위치 변경">📍 ${c.parking ? esc(c.parking) : '위치 미입력'}</span>` : ''}
         </div>
         <div class="car-meta">
           ${c.year ? `<span>연식 ${esc(c.year)}</span>` : ''}
@@ -314,6 +328,15 @@
     return `<button class="btn btn-gold btn-sm" onclick="advance('${c.id}')">→ ${next[1]}</button>`;
   }
 
+  function setParking(id) {
+    const c = cars.find(x => x.id === id);
+    if (!c) return;
+    const p = prompt(`주차위치 — ${c.model} ${c.plate || ''}`, c.parking || '');
+    if (p === null) return;
+    c.parking = p.trim();
+    persist(); render();
+  }
+
   function advance(id) {
     const c = cars.find(x => x.id === id);
     if (!c) return;
@@ -340,6 +363,7 @@
     document.getElementById('f-year').value = c ? (c.year || '') : '';
     document.getElementById('f-mileage').value = c && c.mileage != null ? c.mileage : '';
     document.getElementById('f-fuel').value = c ? (c.fuel || '디젤') : '디젤';
+    document.getElementById('f-parking').value = c ? (c.parking || '') : '';
     document.getElementById('f-status').value = c ? c.status : 'review';
     document.getElementById('f-buy-price').value = c && c.buyPrice != null ? c.buyPrice : '';
     document.getElementById('f-buy-date').value = c ? (c.buyDate || '') : '';
@@ -368,6 +392,7 @@
       year: document.getElementById('f-year').value.trim(),
       mileage: num(document.getElementById('f-mileage').value),
       fuel: document.getElementById('f-fuel').value,
+      parking: document.getElementById('f-parking').value.trim(),
       status: document.getElementById('f-status').value,
       buyPrice: num(document.getElementById('f-buy-price').value),
       buyDate: document.getElementById('f-buy-date').value,
